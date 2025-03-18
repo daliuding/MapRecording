@@ -1,0 +1,11 @@
+{
+  "name": "map-record",
+  "source": "./index.html",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "devDependencies": {
+    "parcel": "^2.13.3"
+  }
+}
