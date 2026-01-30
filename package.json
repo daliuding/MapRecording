@@ -1,11 +1,60 @@
 {
   "name": "map-record",
-  "source": "./index.html",
+  "version": "1.0.0",
+  "description": "大连市区看房记录桌面应用",
+  "main": "electron/main.js",
+  "type": "module",
   "scripts": {
-    "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5173 && electron .\"",
+    "prebuild": "node -e \"const fs=require('fs');const path=require('path');const dir=path.join(process.cwd(),'release','win-unpacked');try{fs.rmSync(dir,{recursive:true,force:true});console.log('已清理 win-unpacked 目录');}catch(e){}\"",
+    "electron:build": "npm run prebuild && npm run build && electron-builder"
   },
   "devDependencies": {
-    "parcel": "^2.13.3"
+    "@vitejs/plugin-vue": "^5.0.0",
+    "concurrently": "^8.2.2",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "vite": "^5.0.0",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "element-plus": "^2.5.0",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.0"
+  },
+  "build": {
+    "appId": "com.maprecord.app",
+    "productName": "房源记录",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "data/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "build/icon.png"
+    }
   }
 }
